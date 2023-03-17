@@ -1,0 +1,203 @@
+<%- include('../partials/header.ejs')%>
+<link href="/css/index.css" rel="stylesheet">
+<style>
+    table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  
+  #mine
+  {
+    position:fixed;
+  }
+
+    </style>
+</head>
+<body>
+    <div class = "container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light navColor" >
+        <a href="/" class="navbar-brand">
+            <img src = "/images/dress.png" alt= "dressLogo" height="50">
+            CLOTHIFY
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+           
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <%if(!user){%>
+                <li class="nav-item">
+                <a  class="nav-link active" href='/users/new'>Sign Up</a> </li>
+                <li class="nav-item">
+                <a  class="nav-link active" href='/users/login'>Login</a> </li>
+                <%}else {%>
+                  <li class="nav-item">
+                    <a  class="nav-link active" href='/users/profile'>Profile</a> </li>
+                    <li class="nav-item">
+                    <a class="nav-link active" href='/users/logout'>Logout</a></li>
+                    <%}%>  
+
+            </ul>
+            <span class="navbar-text">
+            </span>
+          </div>
+    </nav>
+    <hr>
+
+      <!--Subnavvvvv-->
+      <section class=" text-light p-2 mainsub">
+        <div class ="row">
+            <div class = "col-md-8 ">
+            
+            <a href="/trades/" class = "subnav">Trade</a>
+            <% if(user) { %>
+            <a href="/trades/newTrade" class = "subnav" >New Trade</a>
+            <% } %>
+      
+         
+            </div>
+            <div class="col-md-4 ">
+                <div class="input-group news-input">
+                    <input type="text" class="form-control" placeholder="Trade search">
+                          <button class="btn btn-dark btn-lg" type="button">Search</button>
+                </div>
+            </div>
+        </div>
+      </section>
+      
+      <% if(errorMessages.length > 0) {%>
+        <% errorMessages.forEach(message=>{%>
+            <div class='error'>
+                <%=message%>
+            </div>
+            <%});%>
+                <%}%>
+    
+                    <% if(successMessages.length > 0) {%>
+    
+                        <% successMessages.forEach(message=>{%>
+                            <div class='success'>
+                                <%=message%>
+                            </div>
+                            <%});%>
+                                <%}%>
+
+<div class = "content">
+    <h2>Welcome, <%=user.firstName%></h2>
+ 
+            <%if(items.length>0) {  %>
+                <p>You have created these stories</p>
+                <table>
+                    <tr>
+                        <td>Category</td>
+                        <td>Name</td>
+                        <td>Status</td>
+                        <td>Update || Delete </td>
+                    </tr>
+                   
+          
+        <%items.forEach(item => {%>
+          <tr>
+          <td>  <a id="pro_item" href = '/trades/<%=item._id%>'><p><%=item.category%></p></a></td>
+            <td><%=item.name%></td>
+            <td><%=item.status%></td>
+            <td>
+                <form>
+                    <p><button class="btn btn-danger" type="submit" formmethod="GET" formaction="/trades/<%= item._id %>/edit">Edit</button>&nbsp;
+                      <button type = "submit" formmethod="POST" formaction="/trades/<%= item._id %>?_method=DELETE" class = "btn btn-success ">Delete</button></p>
+                      <% if(item.status == 'Offer Pending') { %>
+                        <button type = "submit" formmethod="POST" formaction="/trans/handling/<%= item._id %>" class = "btn btn-success ">Manage Offer</button></p>
+                      <% } %>
+                    </form>
+            </td>
+         
+          <%} )%>
+           </tr>
+       
+    </table>
+   <% } else {%>  
+        <p>You have not created any stories</p>
+    <%}%>
+
+
+    <% if(like_list.length >0){ %>
+      
+
+      <table>
+        <p>Your Watch List</p>
+        <tr>
+            <td>Category</td>
+            <td>Name</td>
+            <td>Status</td>
+            <td>Unwatch here </td>
+        </tr>
+       
+      <% for(let i=0;i < like_list.length;i++) {%>
+       
+
+         <% if(like_list[i].like_value) {%>
+           
+        <tr>
+        <td><%= like_list[i].dress_id.category%></td>
+        <td><%= like_list[i].dress_id.name%></td>
+        <td><%= like_list[i].dress_id.status%></td>
+        <td>
+            <form>
+              <p><button class="btn btn-danger" formmethod="post" formaction="/trans/like/<%= like_list[i].dress_id._id%>">UnWatch</button></p>
+            </form>
+        </td>
+      </tr>
+   
+          <% } %>
+      <% } %>
+    </table>
+    <% } %>
+   
+
+
+    <%if(trans.length > 0) {%>
+      <p>Your Offers List</p>
+          <table>
+          <tr>
+            <td>Category</td>
+            <td>Name</td>
+            <td>Status</td>
+            <td>Cancel Offer </td>
+        </tr>
+     
+      
+      <% for(let i=0;i< trans.length;i++) {%>
+        <!-- The logged_user_dressId below was changed from selling_user_dressId( with the assumption that profiles pulls out all dresses of the logged in user) -->
+        <% if (trans[i].selling_user_dressId.status=="Offer Pending") {%>
+          
+        <tr>
+        <td><%= trans[i].selling_user_dressId.category%></td>
+        <td><%= trans[i].selling_user_dressId.name%></td>
+        <td><%= trans[i].selling_user_dressId.status%></td>
+        <td>
+        <form>
+        <button formmethod="POST" formaction="/trans/remove/<%= trans[i]._id%>">cancel</button>
+        </form>
+      </td>
+      </tr>
+      <%}%>
+      <% } %>
+   
+      <% }%>
+    </table>
+    </div>
+ 
+    <%- include('../partials/footer.ejs')%>
+
+
+    <!-- <% if(like_list.length >0){ %>
+      <% for(let i=0;i< like_list.length;i++) {%>
+         <% if(like_list[i].like_value) {%>
+            <%= like_list[i].dress_id.name%>
+            <form>
+              <p><button class="btn btn-danger" formmethod="post" formaction="/trans/like/<%= like_list[i].dress_id._id%>">UnWatch</button></p>
+            </form>
+          <% } %>
+      <% } %>
+    <% } %> -->

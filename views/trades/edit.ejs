@@ -1,0 +1,123 @@
+<%- include('../partials/header.ejs')%>
+<link href="/css/newTrade.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class = "container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light navColor" >
+        <a href="/" class="navbar-brand">
+            <img src = "/images/dress.png" alt= "dressLogo" height="50">
+            CLOTHIFY
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+           
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <%if(!user){%>
+                <li class="nav-item">
+                <a  class="nav-link active" href='/users/new'>Sign Up</a> </li>
+                <li class="nav-item">
+                <a  class="nav-link active" href='/users/login'>Login</a> </li>
+                <%}else {%>
+                  <li class="nav-item">
+                    <a  class="nav-link active" href='/users/profile'>Profile</a> </li>
+                    <li class="nav-item">
+                    <a class="nav-link active" href='/users/logout'>Logout</a></li>
+                    <%}%>  
+
+            </ul>
+            <span class="navbar-text">
+            </span>
+          </div>
+    </nav>
+    <hr>
+
+      <!--Subnavvvvv-->
+      <section class=" text-light p-2 mainsub">
+        <div class ="row">
+            <div class = "col-md-8 ">
+            
+            <a href="/trades/" class = "subnav">Trade</a>
+            <% if(user) { %>
+            <a href="/trades/newTrade" class = "subnav" >New Trade</a>
+            <% } %>
+      
+         
+            </div>
+            <div class="col-md-4 ">
+                <div class="input-group news-input">
+                    <input type="text" class="form-control" placeholder="Trade search">
+                          <button class="btn btn-dark btn-lg" type="button">Search</button>
+                </div>
+            </div>
+        </div>
+      </section>
+      
+      <% if(errorMessages.length > 0) {%>
+        <% errorMessages.forEach(message=>{%>
+            <div class='error'>
+                <%=message%>
+            </div>
+            <%});%>
+                <%}%>
+    
+                    <% if(successMessages.length > 0) {%>
+    
+                        <% successMessages.forEach(message=>{%>
+                            <div class='success'>
+                                <%=message%>
+                            </div>
+                            <%});%>
+                                <%}%>
+      <!--FORM-->
+      <form method="POST" action="/trades/<%= item.id %>?_method=PUT">
+
+      <div class = "row form">
+          <div class = "col-md-3">
+          </div>
+          <div class = "col-md-6">
+            <div class="mb-3 row">
+             
+                <label for="category" class="col-sm-2 col-form-label">category</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="category" value="<%= item.category%>" name="category" placeholder="category" required>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="name" value="<%= item.name%>" name="name" placeholder="name" required>
+                </div>
+              </div>
+              <!-- <div class="mb-3 row">
+                <label for="status" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="status" value="<%= item.status%>" name="status" placeholder="status" required>
+                </div>
+              </div> -->
+              <div class="mb-3 row">
+                <label for="details" class="col-sm-2 col-form-label">Details</label>
+                <div class="col-sm-10">
+                <textarea placeholder="details" id = "details" name="details" required minlength="5"> <%= item.details %></textarea>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="image" class="col-sm-2 col-form-label">Image URL</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="image" value="<%= item.image_url %>" name="image_url" placeholder="Enter the Image Url">
+                </div>
+                </div>
+            <div class = "mb-3 row">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4 buttonn"><button class = "btn btn-success tradeFloatRight" type="submit">Trade</button></div>
+                </div>
+              
+            </div>
+           
+          </div>
+      </div>
+    </form>
+    <%- include('../partials/footer.ejs')%>

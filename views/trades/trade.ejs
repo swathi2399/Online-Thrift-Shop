@@ -1,0 +1,129 @@
+<%- include('../partials/header.ejs')%>
+<link href="/css/trade.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class = "container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light navColor" >
+        <a href="/" class="navbar-brand">
+            <img src = "/images/dress.png" alt= "dressLogo" height="50">
+            CLOTHIFY
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+           
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <%if(!user){%>
+                <li class="nav-item">
+                <a  class="nav-link active" href='/users/new'>Sign Up</a> </li>
+                <li class="nav-item">
+                <a  class="nav-link active" href='/users/login'>Login</a> </li>
+                <%}else {%>
+                  <li class="nav-item">
+                    <a  class="nav-link active" href='/users/profile'>Profile</a> </li>
+                    <li class="nav-item">
+                    <a class="nav-link active" href='/users/logout'>Logout</a></li>
+                    <%}%>  
+
+            </ul>
+            <span class="navbar-text">
+            </span>
+          </div>
+    </nav>
+    <hr>
+
+      <!--Subnavvvvv-->
+      <section class=" text-light p-2 mainsub">
+        <div class ="row">
+            <div class = "col-md-8 ">
+            
+            <a href="/trades/" class = "subnav">Trade</a>
+            <% if(user) { %>
+            <a href="/trades/newTrade" class = "subnav" >New Trade</a>
+            <% } %>
+      
+         
+            </div>
+            <div class="col-md-4 ">
+                <div class="input-group news-input">
+                    <input type="text" class="form-control" placeholder="Trade search">
+                          <button class="btn btn-dark btn-lg" type="button">Search</button>
+                </div>
+            </div>
+        </div>
+      </section>
+      
+      <% if(errorMessages.length > 0) {%>
+        <% errorMessages.forEach(message=>{%>
+            <div class='error'>
+                <%=message%>
+            </div>
+            <%});%>
+                <%}%>
+    
+                    <% if(successMessages.length > 0) {%>
+    
+                        <% successMessages.forEach(message=>{%>
+                            <div class='success'>
+                                <%=message%>
+                            </div>
+                            <%});%>
+                                <%}%>
+        <div class ="container text-left">
+            <div class="row align-items-left image">
+                <div class="col-md-2 sm-50 main width-auto">
+                 <div class="item"><img src="<%= item.image_url %>" alt="Dress" height="30"/>
+                </div>
+                </div>
+                
+                <div class="col-md-4 sm-50 main">
+                <h1 class = "heading"><%= item.category %></h1>
+                <p class = "content"><%= item.name %></p>
+                <p class = "content"><%= item.status %></p>
+                </div>
+                <div class="col-md-4 sm-50 main">
+                
+               
+                 <% if(user!= item.author._id) {%>
+                    <p>Are you interested in ?</p>
+                 <form>
+                <% if (like) {%>
+                <p><button class="btn btn-danger" formmethod="post" formaction="/trans/like/<%= item._id%>">UnWatch</button></p>
+                <% } else {%>
+                <p><button class="btn btn-danger" formmethod="post" formaction="/trans/like/<%= item._id%>">Watch</button></p>
+                <%}%>
+                </form>
+                <form>
+                <input type="hidden" value="<%= item.author._id%>" name="buying_user_id">
+                <% if(item.status=="Available"){%> 
+                <p><button class = "btn btn-success" formmethod="post" formaction="/trans/offer/<%= item._id%>">Buy</button></p>
+                <% } %>
+            </form>
+            <%}%>
+                </div>
+            </div>
+            <div class="row algin-items-left image">
+            <div class="col md-8 sm-50 main">
+            <div class="Summary"><h3>details</h3>
+                <p><%= item.details %></p>
+               
+                </div>
+                <%if(user == item.author._id){%>
+                
+                <form>
+                <p><button class="btn btn-danger" type="submit" formmethod="GET" formaction="/trades/<%= item.id %>/edit">Edit</button>&nbsp;
+                  <button type = "submit" formmethod="POST" formaction="/trades/<%= item.id %>?_method=DELETE" class = "btn btn-success ">Delete</button></p>
+              </form>
+              <%}%>
+              
+            </div>
+            </div>
+                
+        </div>
+
+      
+ 
+  <!--Footer-->
+  <%- include('../partials/footer.ejs')%>

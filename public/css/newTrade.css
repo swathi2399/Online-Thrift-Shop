@@ -1,0 +1,138 @@
+.container-fluid
+{
+    padding-left: 0%;
+    padding-right: 0%;
+    overflow-x: hidden;
+}
+html,body
+{
+    min-height:100%;
+}
+.navColor {
+    background: #278cad;
+    font-family: monospace ;
+}
+hr{
+    margin: 0;
+    background-color: currentColor;
+    opacity: inherit;
+}
+.mainsub{
+    background: #278cad;
+    font-family: monospace ;
+
+}
+.subnav
+{
+    color:black;
+    text-decoration: none;
+    padding-right: 30px;
+}
+.subnav:hover{
+    color:rgb(12, 10, 10);
+}
+
+.main
+{
+    /* margin-top: 100px; */
+    height:100%;
+
+}
+.para
+{
+    margin-bottom: 0;
+}
+
+
+
+
+.mainarea
+{
+    min-width: 100%;
+}
+
+
+
+li{
+    list-style-type: none;
+}
+.table
+{
+    margin-bottom: 50px;
+}
+.button
+{
+    margin-top: 0px; 
+}
+.form
+{
+    margin-top: 100px;
+}
+.form input, textarea
+{
+    width:80%;
+}
+.form button
+{
+    position: relative;
+    margin-left: 0;
+
+}
+.buttonn a
+{
+    text-decoration: None;
+    color:black;
+}
+
+.foot   
+{
+    margin-top: -20px;
+}
+.foot1
+{
+    display: inline-flex;
+}
+.contact
+{
+    padding-left: 20px;
+}
+
+.footer-position
+{ 
+    bottom: 0px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 40px;
+}
+
+.tradeFloatRight {
+    float: right;
+    margin-right: 100px;
+}
+.width-auto
+{
+    width:auto;
+}
+.alink a{
+    text-decoration: none;
+    color:white;
+}
+.alink a:hover{
+    color:white;
+}
+.success {
+	background: rgba(108, 192, 112, 0.7);
+	color: #fff;
+	width: 100%;
+	text-align: center;
+	padding: 10px 10px;
+  }
+  
+  .error {
+	background: rgba(255, 102, 51, 0.7);
+	color: #fff;
+	width: 100%;
+	text-align: center;
+	padding: 10px 10px;
+  }
